@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/pages/californiatemplate/template.xhtml">
+
+	<ui:define name="content">
+		<h:form id="peopleForm">
+			<div class="ui-g ui-g-nopad">
+				<div class="ui-g-12 NoMargin">
+					<div class="card">
+						<div>
+							<p:breadCrumb homeDisplay="text" styleClass="breadcrumbs">
+								<p:menuitem value="" />
+								<p:menuitem value="Home"
+									style="font-size: 13px; margin-left: 5px !important; font-weight: bold !important;"
+									url="#{homePage.viewPath}" />
+								<p:menuitem value="People" url="#{peopleView.viewPath}" />
+								<p:menuitem value="People form" url="#{peopleForm.viewPath}" />
+							</p:breadCrumb>
+						</div>
+					</div>
+				</div>
+				
+				<div class="ui-g-12 NoMargin">
+					<div class="card panelgridcolumns">
+
+						<h:panelGrid columns="2" styleClass="Wid100"
+							columnClasses="ui-g-12 ui-md-6, ui-g-12 ui-md-6" layout="grid">
+
+							<p:column styleClass="Wid50">
+
+								<p:panelGrid styleClass="Wid100">
+									<p:row>
+										<p:column styleClass="panel-grid-label-cell-form Wid40"
+											colspan="1">Enter First Name</p:column>
+										<p:column colspan="1" styleClass="Wid60">
+											<p:inputText value="#{peopleForm.model.firstName}"
+												styleClass="Wid100 boardered-text-field" required="true" />
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+
+								<p:panelGrid styleClass="Wid100">
+									<p:row>
+										<p:column styleClass="panel-grid-label-cell-form Wid40"
+											colspan="1">Enter Last Name</p:column>
+										<p:column colspan="1" styleClass="Wid60">
+											<p:inputText value="#{peopleForm.model.lastName}"
+												styleClass="Wid100 boardered-text-field" required="true" />
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+
+							</p:column>
+							
+						</h:panelGrid>
+						<p:outputPanel styleClass="rightAlign">
+							<p:commandButton id="saveBtn" action="#{peopleForm.save}"
+								value="Save" update="peopleForm" validateClient="true"
+								icon="fa fa-save"
+								styleClass="#{recordsCountController.formButtonColor}" />
+
+							<p:button value="Back" styleClass="red-btn" icon="fa fa-backward"
+								ajax="false" outcome="#{peopleForm.parentView}" />
+						</p:outputPanel>
+
+					</div>
+
+				</div>
+			</div>
+			<p:blockUI block="peopleForm" trigger="saveBtn">
+				<p:graphicImage value="/resources/images/workingicon.png" />
+			</p:blockUI>
+		</h:form>
+	</ui:define>
+</ui:composition>

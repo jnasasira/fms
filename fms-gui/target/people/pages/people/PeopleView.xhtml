@@ -1,0 +1,135 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/pages/californiatemplate/template.xhtml">
+
+	<ui:define name="content">
+		<h:form id="peopleView">
+			<div class="ui-g">
+				<div class="ui-g-12">
+					<div class="card">
+						<div class="shadow-box ui-shadow-1">
+							<p:breadCrumb homeDisplay="text" styleClass="breadcrumbs">
+								<p:menuitem value="" />
+								<p:menuitem value="Home"
+									style="font-size: 13px; margin-left: 5px !important; font-weight: bold !important;"
+									url="#{homePage.viewPath}" />
+								<p:menuitem value="People" url="/fred" />
+							</p:breadCrumb>
+						</div>
+					</div>
+					<div>
+						<p:inputText id="searchTerm" required="false"
+							placeholder="Search for people ..."
+							style="width:50%; margin-right: 10px; margin-top: 20px;"
+							onkeypress="#{peopleView.reloadFilterReset()}"
+							value="#{peopleView.searchTerm}" />
+						<p:commandButton icon="fa fa-search" styleClass="orange-btn"
+							id="searchBtn" actionListener="#{peopleView.reloadFilterReset()}"
+							update="peopleView" value="Search">
+						</p:commandButton>
+						<p:commandButton icon="fa fa-plus" value="Add People"
+							styleClass="green-btn MarginLeft5"
+							action="#{peopleForm.getViewPath}">
+							<f:setPropertyActionListener target="#{peopleForm.model}"
+								value="#{null}" />
+						</p:commandButton>
+						<p:separator />
+						<p:panelGrid>
+							<p:row>
+								<p:column styleClass="panel-grid-label-cell-form" colspan="1">Sort By</p:column>
+								<p:column colspan="1" styleClass="Wid50">
+									<p:selectOneMenu value="#{peopleView.selectedSortField}"
+										var="sortField" styleClass="Wid100" effect="fade"
+										autoComplete="true" filter="true"
+										converter="sortFieldConverter"
+										actionListener="#{peopleView.reloadFilterReset()}"
+										filterMatchMode="startsWith">
+										<f:selectItem itemLabel="--Select--" itemValue="#{null}" />
+										<f:selectItems value="#{peopleView.sortFields}"
+											var="sortField" itemLabel="#{sortField}"
+											itemValue="#{sortField}" />
+										<p:column>
+											<h:outputText value="#{sortField}" />
+										</p:column>
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</div>
+					<div class="shadow-box ui-shadow-1">
+						<p:dataTable id="peopleTable" var="model" value="#{peopleView}"
+							widgetVar="peopleTable"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							paginator="true" lazy="true"
+							rows="#{peopleView.maximumresultsPerpage}"
+							emptyMessage="#{peopleView.dataEmptyMessage}"
+							paginatorPosition="bottom" paginatorAlwaysVisible="false"
+							rowIndexVar="row" reflow="true" styleClass="TableAlgnment">
+
+							<f:facet name="header">
+								<p:outputPanel styleClass="leftAlign">
+									<p:outputPanel styleClass="centerAlign">
+										<p:outputLabel value="#{peopleView.totalRecords} people found"
+											styleClass="white bold" />
+									</p:outputPanel>
+								</p:outputPanel>
+							</f:facet>
+
+							<p:column width="30" headerText="No.">
+								<h:outputText value="#{row + 1}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="First Name" />
+								</f:facet>
+								<h:outputText value="#{model.firstName}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Last Name" />
+								</f:facet>
+								<h:outputText value="#{model.lastName}" />
+							</p:column>
+
+							<p:column headerText="Options" width="80">
+								<p:commandLink action="#{peopleForm.getViewPath}"
+									value="View/Edit" styleClass="hyperLink">
+									<f:setPropertyActionListener target="#{peopleForm.model}"
+										value="#{model}" />
+								</p:commandLink>
+							</p:column>
+
+							<p:column headerText="Delete" width="50">
+								<p:commandButton icon="fa fa-trash"
+									styleClass="red-btn MarginLeft5"
+									action="#{peopleView.delete(model)}" update="peopleTable">
+									<p:confirm header="Confirmation"
+										message="You are about to delete a person. Do you wish to continue?"
+										icon="ui-icon-alert" />
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+
+						<p:blockUI block="peopleView" trigger="searchBtn">
+							<p:graphicImage value="/resources/images/workingicon.png" />
+						</p:blockUI>
+					</div>
+				</div>
+			</div>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes" icon="fa fa-thumbs-up" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="fa fa-thumbs-down" />
+			</p:confirmDialog>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

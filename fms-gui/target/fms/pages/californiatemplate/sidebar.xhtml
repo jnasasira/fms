@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pc="http://primefaces.org/california">
+
+	<div
+		class="layout-sidebar #{guestPreferences.darkMenu ? 'layout-sidebar-cyan' : ''} #{guestPreferences.gradientMenu ? 'layout-sidebar-gradient': ''}">
+		<div id="nano-container" class="nano">
+			<div class="nano-content sidebar-scroll-content">
+				<h:outputStylesheet name="primeicons/primeicons.css"
+					library="primefaces" />
+				<ui:fragment
+					rendered="#{guestPreferences.profileMode == 'inline' ? true : false}">
+					<div class="user-profile">
+						<a id="sidebar-profile-button" href="#"> <p:graphicImage
+								name="images/avatar-john.png" library="california-layout" /> <span
+							class="sidebar-profile-name">John Nasasira</span> <span
+							class="sidebar-profile-role">Finance Manager</span>
+						</a>
+					</div>
+				</ui:fragment>
+				
+
+				<h:form id="menuform">
+					<pc:menu widgetVar="me">
+						<p:menuitem id="om_dashboard" value="Dashboard"
+							icon="fa fa-fw fa-home" url="/pages/requisitions/PeopleForm.xhtml" />
+							
+							 <p:submenu id="om_customization" label="Calendar" icon="fa fa-fw fa-calendar">
+                            <p:menuitem id="custom3" value="Flag Working days" icon="fa fa-fw fa-bars" url="/pages/requisitions/PeopleView.xhtml" ajax="false"/>
+                            <p:menuitem id="custom4" value="Working Calendar" icon="fa fa-fw fa-bars" actionListener="#{guestPreferences.setMenuLayout('layout-wrapper-overlay-sidebar')}" ajax="false"/>
+                            <p:menuitem id="custom1" value="Events" icon="fa fa-fw fa-bars" actionListener="#{guestPreferences.setMenuLayout('layout-wrapper-slim-sidebar')}" ajax="false" />
+                            </p:submenu>
+                            
+                            
+								<p:submenu id="theme1" label="Requisitions" icon="fa fa-fw fa-paint-brush" styleClass="text-badge">
+								<f:attribute name="badge" value="5 New"/>
+                                    <p:menuitem id="blue_custom0" value="Pending Requisitions" icon="fa fa-fw fa-square-o" actionListener="#{guestPreferences.setMenuMode(false, false, 'blue')}" ajax="false"/>
+                                    <p:menuitem id="blue_custom1" value="Approved Requisitions" icon="fa fa-fw fa-square" actionListener="#{guestPreferences.setMenuMode(true, false, 'blue')}" ajax="false"/>
+                                    <p:menuitem id="blue_custom2" value="Rejected Requisitions" icon="fa fa-fw fa-square" actionListener="#{guestPreferences.setMenuMode(true, true, 'blue')}" ajax="false"/>
+                              </p:submenu>
+                              
+                              <p:submenu id="om_user_menu_customization" label="User Management" icon="fa fa-fw fa-user">
+                            <p:menuitem id="custom_user_1" value="Add Employee Account" icon="fa fa-fw fa-square" actionListener="#{guestPreferences.setProfileMode('inline')}" ajax="false" />
+                            <p:menuitem id="custom_user_2" value="View Employees" icon="fa fa-fw fa-square" actionListener="#{guestPreferences.setProfileMode('topbar')}" ajax="false"/>
+                            
+                        		</p:submenu>
+                              
+                              <p:submenu id="om_mega_menu_customization" label="Reports" icon="fa fa-fw fa-bars" >
+                          		
+                            		<p:menuitem id="custom_mega_0" value="All requisitions" icon="fa fa-fw fa-square-o" actionListener="#{guestPreferences.setMegaMenuMode(false, false)}" ajax="false"/>
+                            		<p:menuitem id="custom_mega_1" value="Finanacial Statement" icon="fa fa-fw fa-square" actionListener="#{guestPreferences.setMegaMenuMode(true, false)}" ajax="false"/>
+                            		<p:menuitem id="custom_mega_2" value="Transactions" icon="fa fa-fw fa-square" actionListener="#{guestPreferences.setMegaMenuMode(true, true)}" ajax="false"/>
+                       		 </p:submenu>
+                                
+                          <p:menuitem id="logout" value="Logout" icon="fa fa-fw fa-sign-out"
+							url="/ServiceLogout" />
+							
+					</pc:menu>
+					
+					
+				</h:form>
+				
+			</div>
+		</div>
+
+	</div>
+	
+
+</ui:composition>
